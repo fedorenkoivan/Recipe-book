@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import "../styles/RecipeList.css"
 
 interface Recipe {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
+  strCategory?: string;
 }
 
 function RecipeList() {
@@ -15,23 +17,25 @@ function RecipeList() {
   const search = searchParams.get('search');
   const ingredient = searchParams.get('ingredient');
 
+  const getTitle = () => {
+    if (search) return `Recipes matching: "${search}"`;
+    if (ingredient) return `Recipes with ingredient: "${ingredient}"`;
+    return 'All Recipes';
+  };
+
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
       try {
         let url = 'http://localhost:5000/recipes';
-
-        if (search) {
-          url += `?search=${encodeURIComponent(search)}`;
-        } else if (ingredient) {
-          url += `?ingredient=${encodeURIComponent(ingredient)}`;
-        }
+        if (search) url += `?search=${encodeURIComponent(search)}`;
+        else if (ingredient) url += `?ingredient=${encodeURIComponent(ingredient)}`;
 
         const res = await fetch(url);
         const data = await res.json();
         setRecipes(data);
       } catch (err) {
-        console.error('Error loading recipes', err);
+        console.error('Failed to fetch recipes:', err);
         setRecipes([]);
       } finally {
         setLoading(false);
@@ -42,31 +46,30 @@ function RecipeList() {
   }, [search, ingredient]);
 
   return (
-    <div>
-      <h1>
-        {search
-          ? `Recipes matching: ${search}`
-          : ingredient
-          ? `Recipes with ingredient: ${ingredient}`
-          : 'All Recipes'}
-      </h1>
+  <div className="recipe-container">
+    <h1 className="recipe-title">{getTitle()}</h1>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {recipes.map((recipe) => (
-            <li key={recipe.idMeal}>
-              <Link to={`/recipe/${recipe.idMeal}`}>
-                <h3>{recipe.strMeal}</h3>
-                <img src={recipe.strMealThumb} alt={recipe.strMeal} width={200} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+    {loading ? (
+      <p>Loading...</p>
+    ) : (
+      <ul className="recipe-list">
+        {recipes.map(recipe => (
+          <li key={recipe.idMeal} className="recipe-item">
+            <Link to={`/recipe/${recipe.idMeal}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <img
+                src={recipe.strMealThumb}
+                alt={recipe.strMeal}
+                className="recipe-image"
+              />
+              <div className="recipe-name">{recipe.strMeal}</div>
+              {recipe.strCategory && <div className="recipe-category">{recipe.strCategory}</div>}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+);
 }
 
 export default RecipeList;
