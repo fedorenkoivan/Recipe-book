@@ -39,6 +39,22 @@ router.get('/recipes', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch recipes' });
   }
 });
-
+router.get('/recipes/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/lookup.php?i=${encodeURIComponent(id)}`);
+    const data = await response.json() as MealDBResponse;
+    
+    if (!data.meals || data.meals.length === 0) {
+      return res.status(404).json({ error: 'Recipe not found' });
+    }
+    
+    res.json(data.meals[0]);
+  } catch (error) {
+    console.error('Error fetching recipe details:', error);
+    res.status(500).json({ error: 'Failed to fetch recipe details' });
+  }
+});
 
 export default router;
