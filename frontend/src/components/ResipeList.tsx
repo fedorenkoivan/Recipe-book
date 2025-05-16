@@ -14,12 +14,14 @@ function RecipeList() {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
 
-  const search = searchParams.get('search');
   const ingredient = searchParams.get('ingredient');
+  const area = searchParams.get('area');
+  const category = searchParams.get('category');
 
   const getTitle = () => {
-    if (search) return `Recipes matching: "${search}"`;
     if (ingredient) return `Recipes with ingredient: "${ingredient}"`;
+    if (area) return `Recipes from: "${area}"`;
+    if (category) return `Recipes in category: "${category}"`;
     return 'All Recipes';
   };
 
@@ -28,8 +30,13 @@ function RecipeList() {
       setLoading(true);
       try {
         let url = 'http://localhost:5000/recipes';
-        if (search) url += `?search=${encodeURIComponent(search)}`;
-        else if (ingredient) url += `?ingredient=${encodeURIComponent(ingredient)}`;
+        const params = new URLSearchParams();
+
+        if (ingredient) params.set('ingredient', ingredient);
+        if (area) params.set('area', area);
+        if (category) params.set('category', category);
+
+        url += `?${params.toString()}`;
 
         const res = await fetch(url);
         const data = await res.json();
@@ -43,7 +50,7 @@ function RecipeList() {
     };
 
     fetchRecipes();
-  }, [search, ingredient]);
+  }, [ingredient]);
 
   return (
   <div className="recipe-container">
