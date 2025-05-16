@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import RecipeList from './components/ResipeList';
+import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import MainPage from './components/MainPage';
+import './App.css';
 
 function App() {
   return (
