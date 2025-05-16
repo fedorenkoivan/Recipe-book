@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
 
-function RecipeByIngredient() {
+function RecipeDetail() {
   const { id } = useParams();
 
   return (
     <div>
-      <h1>Recipe Details for ID: {id}</h1>
+      <h2>Recipe Details for ID: {id}</h2>
     </div>
   );
 }
 
-export default RecipeByIngredient;
+export default RecipeDetail;
