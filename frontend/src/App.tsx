@@ -1,46 +1,17 @@
-import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import MainPage from './components/MainPage';
+import ResipeList from './components/ResipeList';
+import RecipeByIngredient from './components/RecipeByIngredient';
+
 import './App.css';
 
-interface Recipe {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strCategory: string;
-}
-
 function App() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/recipes')
-      .then(res => res.json())
-      .then(data => {
-        setRecipes(data);
-      })
-      .catch(error => console.error('Error fetching recipes:', error))
-      .finally(() => {
-        setLoading(false)
-      });
-  }, []);
-
   return (
-    <div>
-      <h1>Recipe Book</h1>
-      {loading ? (
-        <p>Loading recipes...</p>
-      ) : (
-        <ul>
-          {recipes.map(recipe => (
-            <li key={recipe.idMeal}>
-              <h3>{recipe.strMeal}</h3>
-              <p>Category: {recipe.strCategory}</p>
-              <img src={recipe.strMealThumb} alt={recipe.strMeal} width="150" />
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/recipe-list" element={<ResipeList />} />
+      <Route path="/recipe:ingredient" element={<RecipeByIngredient />} />
+    </Routes>
   );
 }
 
