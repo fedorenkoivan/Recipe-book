@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import FilterOptions from "./FilterOptions";
+
 
 function MainPage() {
   const navigate = useNavigate();
@@ -13,7 +15,7 @@ function MainPage() {
   return (
     <div>
       <h1>Welcome to the Recipe App</h1>
-
+      <FilterOptions />
       <button onClick={() => navigate('/recipe-list')}>All Recipes</button>
 
       <div style={{ marginTop: '20px' }}>

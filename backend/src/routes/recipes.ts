@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import { MealDBResponse } from '../types/types';
 
 dotenv.config();
 
@@ -7,30 +8,24 @@ const router = Router();
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
-interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strInstructions?: string;
-  strMealThumb: string;
-}
-
-interface MealDBResponse {
-  meals: Meal[] | null;
-}
-
 const fetch = (...args: Parameters<typeof import('node-fetch').default>) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 router.get('/recipes', async (req: Request, res: Response) => {
-  const { search, ingredient } = req.query as { search?: string; ingredient?: string };
+  const { ingredient, area, category } = req.query as {
+    ingredient?: string;
+    area?: string;
+    category?: string;
+  };
 
   let url = '';
 
-  if (search) {
-    url = `${API_BASE_URL}/search.php?s=${encodeURIComponent(search)}`;
-  } else if (ingredient) {
+  if (ingredient) {
     url = `${API_BASE_URL}/filter.php?i=${encodeURIComponent(ingredient)}`;
+  } else if (area) {
+    url = `${API_BASE_URL}/filter.php?a=${encodeURIComponent(area)}`;
+  } else if (category) {
+    url = `${API_BASE_URL}/filter.php?c=${encodeURIComponent(category)}`;
   } else {
     url = `${API_BASE_URL}/search.php?s=`;
   }
@@ -44,5 +39,6 @@ router.get('/recipes', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch recipes' });
   }
 });
+
 
 export default router;
