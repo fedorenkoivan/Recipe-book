@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface Option {
-  strArea?: string;
-  strCategory?: string;
-}
+import type { Option } from '../types/types';
 
 function FilterOptions() {
   const [areas, setAreas] = useState<Option[]>([]);

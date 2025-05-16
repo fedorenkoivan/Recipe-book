@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import "../styles/RecipeList.css"
-
-interface Recipe {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strCategory?: string;
-}
+import type { Recipe } from '../types/types';
 
 function RecipeList() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

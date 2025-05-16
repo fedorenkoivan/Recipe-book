@@ -1,23 +1,12 @@
 import { Router, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import { MealDBResponse } from '../types/types';
 
 dotenv.config();
 
 const router = Router();
 
 const API_BASE_URL = process.env.API_BASE_URL;
-
-interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strInstructions?: string;
-  strMealThumb: string;
-}
-
-interface MealDBResponse {
-  meals: Meal[] | null;
-}
 
 const fetch = (...args: Parameters<typeof import('node-fetch').default>) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
