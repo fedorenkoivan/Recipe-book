@@ -1,6 +1,11 @@
 # Recipe Book
 
-A full-stack web application that allows users to browse, search and explore recipes from around the world.
+<div align="center">
+<i>
+   A full-stack web application that allows users to browse, search and explore recipes from around the world.
+</i>
+  <img src="https://github.com/user-attachments/assets/deb301a5-96a5-40de-a8e7-9bdef26a2b7f" alt="Recipe Book App" width="600">
+</div>
 
 ## Features
 
