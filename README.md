@@ -83,7 +83,7 @@ cd backend
 npm run build
 
 # Build frontend
-cd ../frontend
+cd frontend
 npm run build
 ```
 
@@ -96,7 +96,7 @@ npm start
 3. Serve the frontend build using a static file server like `serve`:
 ```bash
 npm install -g serve
-cd ../frontend/dist
+cd frontend/dist
 serve -s
 ```
 
