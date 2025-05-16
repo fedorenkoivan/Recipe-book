@@ -1,0 +1,58 @@
+/* filepath: c:\Users\Ivan\Recipe-book\frontend\src\styles\FilterOptions.css */
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.filter-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  border-left: 4px solid var(--accent);
+  padding-left: 0.8rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.filter-button {
+  background-color: white;
+  border: 1px solid var(--shadow);
+  border-radius: 50px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px var(--shadow);
+}
+
+.filters-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted-color);
+}
+
+@media (max-width: 768px) {
+  .filter-buttons {
+    gap: 0.6rem;
+  }
+  
+  .filter-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
