@@ -6,7 +6,6 @@ function RecipeByIngredient() {
   return (
     <div>
       <h1>Recipe Details for ID: {id}</h1>
-      {/* You will fetch and display detailed info here */}
     </div>
   );
 }

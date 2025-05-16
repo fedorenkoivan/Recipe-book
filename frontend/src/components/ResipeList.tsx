@@ -5,44 +5,61 @@ interface Recipe {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
-  strCategory: string;
 }
 
 function RecipeList() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
-  const filter = searchParams.get('search') || '';
+
+  const search = searchParams.get('search');
+  const ingredient = searchParams.get('ingredient');
 
   useEffect(() => {
     const fetchRecipes = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/recipes?search=${filter}`);
+        let url = 'http://localhost:5000/recipes';
+
+        if (search) {
+          url += `?search=${encodeURIComponent(search)}`;
+        } else if (ingredient) {
+          url += `?ingredient=${encodeURIComponent(ingredient)}`;
+        }
+
+        const res = await fetch(url);
         const data = await res.json();
         setRecipes(data);
       } catch (err) {
         console.error('Error loading recipes', err);
+        setRecipes([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecipes();
-  }, [filter]);
+  }, [search, ingredient]);
 
   return (
     <div>
-      <h1>{filter ? `Recipes matching: ${filter}` : 'All Recipes'}</h1>
+      <h1>
+        {search
+          ? `Recipes matching: ${search}`
+          : ingredient
+          ? `Recipes with ingredient: ${ingredient}`
+          : 'All Recipes'}
+      </h1>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {recipes.map((recipe) => (
-            <li key={recipe.idMeal} style={{ marginBottom: '20px' }}>
-              <Link to={`/recipe/${recipe.idMeal}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h2>{recipe.strMeal}</h2>
-                <img src={recipe.strMealThumb} alt={recipe.strMeal} width="200" />
-                <p>Category: {recipe.strCategory}</p>
+            <li key={recipe.idMeal}>
+              <Link to={`/recipe/${recipe.idMeal}`}>
+                <h3>{recipe.strMeal}</h3>
+                <img src={recipe.strMealThumb} alt={recipe.strMeal} width={200} />
               </Link>
             </li>
           ))}
